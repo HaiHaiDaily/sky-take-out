@@ -81,6 +81,7 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
+        <!--Knife4j是一个集Swagger2和OpenAPI3为一体的增强解决方案-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
