@@ -8,11 +8,13 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Employee;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -144,7 +147,9 @@ public class DishServiceImpl implements DishService {
      * @param dishVO
      */
     public void updateWithFlavor(DishVO dishVO) {
+        //创建实体类
         Dish dish=new Dish();
+        //dishVO部分数据拷贝到dish
         BeanUtils.copyProperties(dishVO,dish);
 
         //根据id修改菜品基本数据
@@ -167,4 +172,36 @@ public class DishServiceImpl implements DishService {
         }
 
     }
+
+    /**
+     * 菜品起售或停售
+     * @param status
+     * @param id
+     */
+    public void startOrStop(Integer status, Long id) {
+        //增加代码复用性
+        Dish dish = Dish.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+        //调用持久层修改员工信息
+        dishMapper.update(dish);
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    public List<Dish> list(Long categoryId) {
+        //要查询 可以售卖的菜品
+        Dish dish=Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+
+        return dishMapper.list(dish);
+    }
+
 }
