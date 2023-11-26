@@ -90,4 +90,49 @@ public class SetmealServiceImpl implements SetmealService {
         //根据 ids 批量删除套餐菜品关系表数据
         setmealDishMapper.deleteBatchBySetmealIds(ids);
     }
+
+    /**
+     * 根据id查询套餐，用于修改页面回显数据
+     * @param id
+     * @return
+     */
+    public SetmealVO getByIdWithDish(Long id) {
+        //根据id查询套餐
+        Setmeal setmeal = setmealMapper.getById(id);
+        //根据套餐id查询套餐菜品关系数据
+        List<SetmealDish> setmealDishes = setmealDishMapper.getBySetmealId(id);
+
+        //两个数据封装到VO
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal, setmealVO);
+        setmealVO.setSetmealDishes(setmealDishes);
+
+        return setmealVO;
+    }
+
+    /**
+     * 修改套餐
+     * @param setmealDTO
+     */
+    public void update(SetmealDTO setmealDTO) {
+        Setmeal setmeal =new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+
+        //套餐表基本数据修改
+        setmealMapper.update(setmeal);
+
+        //批量删除旧的套餐菜品关系表数据
+        //获取套餐id
+        Long setmealId = setmealDTO.getId();
+        setmealDishMapper.deleteBatchBySetmealId(setmealId);
+
+        //重新增信新的套餐菜品关系表数据
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        setmealDishes.forEach(setmealDish -> {
+            setmealDish.setSetmealId(setmealId);
+        });
+
+        //保存套餐和菜品的关联关系 批量新增
+        setmealDishMapper.insertBatch(setmealDishes);
+    }
 }
