@@ -11,3 +11,8 @@ sky:
     access-key-id: LTAI5t8xTHMDjNN3ReCMewX5
     access-key-secret: QlfX1d4hENAK9U8QtjkJcKEbjPZQBC
     bucket-name: haihai-sky-itcast
+  redis:
+    host: localhost
+    port: 6379
+    password: 147hai147
+    database: 1
