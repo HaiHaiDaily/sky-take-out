@@ -22,6 +22,8 @@ import java.util.Map;
 
 /**
  * Http工具类
+ * HttpClient是Apache Jakarta Common下的子项目，
+ * 可以用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。
  */
 public class HttpClientUtil {
 
@@ -34,7 +36,7 @@ public class HttpClientUtil {
      * @return
      */
     public static String doGet(String url,Map<String,String> paramMap){
-        // 创建Httpclient对象
+        // 创建 Httpclient对象(用于给服务端发送请求)
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         String result = "";
@@ -169,6 +171,7 @@ public class HttpClientUtil {
 
         return resultString;
     }
+
     private static RequestConfig builderRequestConfig() {
         return RequestConfig.custom()
                 .setConnectTimeout(TIMEOUT_MSEC)
