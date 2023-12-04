@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @CachePut 将方法的返回值放到缓存中
  * @CacheEvict 将一条或多条数据从缓存中删除
  */
+@EnableScheduling //开启任务调度
 @Slf4j
 public class SkyApplication {
     public static void main(String[] args) {
